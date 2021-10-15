@@ -1,0 +1,438 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block style %}
+<meta http-equiv="refresh" content="30">
+
+{% endblock style %}
+{% block content %}
+<style>
+body{
+  	background-color: beige !important;
+}
+
+
+
+</style>
+{% if messages %}
+  <div class="columns"  id="direct" style="    display: inline-flex; margin-top:5px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start; width:100%;
+    align-items: flex-start;">
+  
+
+  <div class="column" style="width:30%; margin-right:10px;">
+  <aside class="menu">
+
+  <ul style="overflow-y: scroll; height: 82vh" class="menu-list">
+<hr style="">
+{% for message in messages %}
+
+<a style="text-decoration:none;  color:black;" class="" href="{% if active_direct == message.user.username %}{% url 'profile' message.user %}{% else %}{% url 'directs' message.user.username %}{% endif %}">
+<div class="" style="{% if active_direct == message.user.username %}background-color:white !important; margin-top:5px;{% endif %}" >
+  <article class="" style="    display: inline-flex; 
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start; width:100%;
+    align-items: flex-start;">
+      <div class="content" style=" ">
+        {% if message.unread %}
+        <p style="font-weight: bold; color: white;    margin-top: 10px;
+    background-color: #198754; padding:5px;border-radius:150px;"> {{ message.unread }}
+        </p>
+        {% endif %}        
+      </div>
+    <div class="" style="padding-left:30px;">
+      <figure class="">
+          {% if message.user.profile.picture %}
+            <img class="card" style="width:50px; height:50px;border-radius:40px;     border-color: black;
+    border-width: 2px;" src="{{ message.user.profile.picture.url }}" alt="Placeholder image">
+          {% else %}
+            <img class="card" style="width:50px; height:50px;border-radius:40px;    border-color: black;
+    border-width: 2px;" src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+          {% endif %}
+      </figure>
+    </div>
+    <div class="" style="padding-left:15px;">
+
+      <div class="">
+      
+        <p style="text-decoration:none; color:black; ">
+          <strong>{{ message.user.profile.first_name }} {{ message.user.profile.last_name }}</strong><br> <small>@{{ message.user.username }}</small>
+        </p>
+      </div>
+
+
+    </div>
+    
+
+  </article>
+  <hr style="margin-top:-5px; margin-bottom:-5px;">
+</div>
+</a>
+
+{% endfor %}
+
+  </ul>
+  </aside>
+
+
+</div>
+
+<div class="column" style="width:70%;">
+
+<div class="card" id="card" style="overflow-y: scroll; height: 82vh;background-color: beige;
+    border-color: beige;    border-left-color: #0a58ca;">
+
+{% for direct in directs %}
+<div class="box" style="padding:10px; width:100%;{% if user == direct.sender.profile.user %}justify-content: flex-end !important; display: inline-flex; 
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center; 
+    align-items: center; {% endif %}">
+  <article class="" >
+    <div class="">
+    </div>
+    <div class="" style="">
+      <div  style="padding-left:25px;display: inline-flex; {% if user == direct.sender.profile.user %}width:400px;{% else %} width:60%;{% endif %}
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center; 
+    align-items: center; 
+    justify-content: flex-start;">
+      {% if user != direct.sender.profile.user %}
+      <figure class="image" style="{% if direct.body %}  {% else %} margin-top: 15px;{% endif %}">
+          {% if direct.sender.profile.picture %}
+            <a   href="{% url 'profile' direct.sender.profile.user %}"><img style="width:40px; height:40px; border-radius:40px;" src="{{ direct.sender.profile.picture.url }}" alt="Placeholder image"></a>
+          {% else %}
+            <img  style="width:40px; height:40px; border-radius:40px;" src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+          {% endif %}
+      </figure>
+      {% endif %}
+      <div class="card"  style="margin-left:20px;width:100%; border-radius:20px;">
+        <p  class="card-header" style="background-color:#85a5c5;     {% if direct.body %}
+border-top-right-radius: 20px;
+    border-top-left-radius: 20px;{% else %} border-radius:20px;{% endif %}
+">
+          <a style="text-decoration:none; color:white;"  href="{% url 'profile' direct.sender.profile.user %}"><small><small>{{ direct.sender.profile.first_name }} {{ direct.sender.profile.last_name }}</small></small> </a>
+        </p>
+        
+        {% if direct.body %}
+        <p class="card-body" style="margin-bottom: -5px; border-radius: 20px;">
+        {{ direct.body }}
+        
+        </p>
+        {% endif %}
+        <small class="card-footer shadow" style="right:0;position:absolute; border-radius: 20px; {% if direct.body %}  {% else %} border-radius:20px;  {% endif %}">{{ direct.date|date:'N d G:i'}}</small>
+      </div>
+      {% if user == direct.sender.profile.user %}
+      <figure class="image" style="padding-left:20px;padding-right:20px;{% if direct.body %}  {% else %} margin-top: 15px;{% endif %}">
+          {% if direct.sender.profile.picture %}
+            <a   href="{% url 'profile' direct.sender.profile.user %}"><img style="width:40px; height:40px; border-radius:40px;" src="{{ direct.sender.profile.picture.url }}" alt="Placeholder image"></a>
+          {% else %}
+            <img  style="width:40px; height:40px; border-radius:40px;" src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+          {% endif %}
+      </figure>
+      {% endif %}
+      </div>
+    </div>
+  </article>
+</div>
+{% endfor %}
+
+</div>
+
+
+
+<form role="form" method="POST" action="{% url 'send_direct' %}">
+  {% csrf_token %}
+<article class="" style="    display: inline-flex;  width:100%;position: fixed;
+    bottom: 0;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start; width:100%; margin-bottom:-10px; padding-left:5px;
+    align-items: flex-start;">
+<div>
+      <figure class="image">
+          {% if user.profile.picture %}
+            <a   href="{% url 'profile' user %}"><img style="width:40px; height:40px; border-radius:40px;" src="{{ user.profile.picture.url }}" alt="Placeholder image"></a>
+          {% else %}
+            <img  style="width:40px; height:40px; border-radius:40px;" src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+          {% endif %}
+      </figure>
+    </div>
+  <div class="" style="    display: inline-flex; 
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start; width:100%;
+    align-items: flex-start;">
+    <input type="hidden" name="to_user" value="{{ active_direct }}">
+    <div class="field" style="
+    width: 67%;padding-left:4px;
+">
+      <p class="">
+        <input class="" style="height:39px;width:100%;border-color: black; border-radius:30px;    outline: 0;" name="body" placeholder="   message..."></input>
+      </p>
+    </div>
+    
+      <div class="" style="width:20%">
+      
+          <button type="submit" name="action" style="border-radius:30px; margin-left:-48px;margin-top:1px;border-color:black; " class="btn btn-outline-info"><img style="height: 20px;" class="" src="../../../../../../static/img/send.png"></buttom>
+        </div>
+      
+   
+  </div>
+</article>
+</form>
+
+</div>
+</div>
+
+
+<script type="text/javascript">
+    if (document.body.offsetWidth < 720) {
+      document.body.style.backgroundColor = "";
+      document.getElementById("direct").innerHTML = `
+
+
+
+  <div class="" style=" width:100%; margin-right:10px; ">
+  <div style="    display: inline-flex;
+    width: 100%;
+    padding-bottom: 7px; padding-top:5px;">
+
+<button  class="btn btn-outline-danger"  data-toggle="modal" style="width:100%; border-radius:30px; display: flex; 
+    align-items:center;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-around;"
+            data-target="#myModal">
+  {% for message in messages %}
+    {% if active_direct == message.user.username %}
+       <figure class="">
+          {% if message.user.profile.picture %}
+            <img class="card" style="width:30px; height:30px;border-radius:40px; margin-bottom:-15px;    border-color: black;
+    border-width: 2px;" src="{{ message.user.profile.picture.url }}" alt="Placeholder image">
+          {% else %}
+            <img class="card" style="width:30px; height:30px;border-radius:40px; margin-bottom:-15px;   border-color: black;
+    border-width: 2px;" src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+          {% endif %}
+      </figure>           
+            Hello!,
+   
+{{message.user.profile.first_name}}
+
+<select style="border-radius:20px; border-color:transparent;background-color:transparent;">
+</select>
+{% endif %}
+{% endfor %}
+</button>
+            </div>
+ <div class="container" style="">
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="myModal"
+      role="dialog"
+      style="margin-top: 60px;"
+    >
+      <div class="modal-dialog"   style="    padding-bottom: 150px;">
+        <!-- Modal content-->
+        <div class="modal-content" style="border-color: blue;
+    border-width: 2px;">
+          <div class="modal-header" style="">
+            <h4 class="modal-title">Friends</h4>
+            
+              <img data-dismiss="modal" style=" padding:10px; height:32px; " class="" src="../../../../../static/img/cancel.png">
+            
+          </div>
+          <div class="modal-body">
+            <div class="col">
+
+
+  <aside class="menu">
+
+  <ul style="overflow-y: scroll; height: 60vh; padding-bottom:50px;" class="menu-list">
+<hr style="">
+{% for message in messages %}
+
+<a style="text-decoration:none;  color:black;" class="" href="{% if active_direct == message.user.username %}{% url 'profile' message.user %}{% else %}{% url 'directs' message.user.username %}{% endif %}">
+<div class="" style="{% if active_direct == message.user.username %}background-color:aquamarine; margin-top:5px;{% endif %}" >
+  <article class="" style="    display: inline-flex; padding-left:10px; 
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start; width:100%;
+    align-items: flex-start;">
+      <div class="content" style=" ">
+        {% if message.unread %}
+        <p style="font-weight: bold; color: white;    margin-top: 10px;
+    background-color: #198754; padding:5px;border-radius:150px;"> {{ message.unread }}
+        </p>
+        {% endif %}        
+      </div>
+    <div class="" style="">
+      <figure class="">
+          {% if message.user.profile.picture %}
+            <img class="card" style="width:50px; height:50px;border-radius:40px;     border-color: black;
+    border-width: 2px;" src="{{ message.user.profile.picture.url }}" alt="Placeholder image">
+          {% else %}
+            <img class="card" style="width:50px; height:50px;border-radius:40px;    border-color: black;
+    border-width: 2px;" src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+          {% endif %}
+      </figure>
+    </div>
+    <div class="" style="padding-left:15px;">
+
+      <div class="">
+      
+        <p style="text-decoration:none; color:black; ">
+          <strong>{{ message.user.profile.first_name }} {{ message.user.profile.last_name }}</strong><br> <small>@{{ message.user.username }}</small>
+        </p>
+      </div>
+
+
+    </div>
+    
+
+  </article>
+  <hr style="margin-top:-5px; margin-bottom:-5px;">
+</div>
+</a>
+
+{% endfor %}
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn"
+              data-dismiss="modal"
+              style=" background-color: blue; color:white;"
+            >
+              close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+  </ul>
+  </aside>
+
+
+
+
+
+<div class="column" style="width:100%; ">
+
+<div class="card" id="card" style="overflow-y: scroll; height: 66vh;background-color: beige;
+    border-color: beige;">
+
+{% for direct in directs %}
+<div class="box" style="padding:10px;padding-bottom:20px; width:100%;{% if user == direct.sender.profile.user %}justify-content: flex-end !important; display: inline-flex; 
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center; 
+    align-items: center; {% endif %}">
+  <article class="" >
+    <div class="">
+    </div>
+    <div class="" style="">
+      <div  style="display: inline-flex;width:100%;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center; 
+    align-items: center; 
+    justify-content: flex-start;">
+      {% if user != direct.sender.profile.user %}
+      <figure class="image" style="{% if direct.body %}  {% else %} margin-top: 15px;{% endif %}">
+          {% if direct.sender.profile.picture %}
+            <a   href="{% url 'profile' direct.sender.profile.user %}"><img style="width:40px; height:40px; border-radius:40px;" src="{{ direct.sender.profile.picture.url }}" alt="Placeholder image"></a>
+          {% else %}
+            <img  style="width:40px; height:40px; border-radius:40px;" src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+          {% endif %}
+      </figure>
+      {% endif %}
+      <div class="card"  style="margin-left:20px;width:100%; border-radius:20px;">
+        <p  class="card-header" style="background-color:#85a5c5;
+border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+">
+          <a style="text-decoration:none; color:white;"  href="{% url 'profile' direct.sender.profile.user %}"><small><small>{{ direct.sender.profile.first_name }} {{ direct.sender.profile.last_name }}</small></small> </a>
+        </p>
+        
+        {% if direct.body %}
+        <p class="card-body" style="margin-bottom: -5px; border-radius: 20px;">
+        {{ direct.body }}</p>
+        {% endif %}
+        <small class="card-footer shadow" style="text-align: right;border-bottom-right-radius:20px; border-bottom-left-radius:20px;">{{ direct.date|date:'N d G:i'}}</small>
+      </div>
+      {% if user == direct.sender.profile.user %}
+      <figure class="image" style="padding-left:20px;{% if direct.body %}  {% else %} margin-top: 15px;{% endif %}">
+          {% if direct.sender.profile.picture %}
+            <a   href="{% url 'profile' direct.sender.profile.user %}"><img style="width:40px; height:40px; border-radius:40px;" src="{{ direct.sender.profile.picture.url }}" alt="Placeholder image"></a>
+          {% else %}
+            <img  style="width:40px; height:40px; border-radius:40px;" src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+          {% endif %}
+      </figure>
+      {% endif %}
+      </div>
+    </div>
+  </article>
+</div>
+{% endfor %}
+
+</div>
+
+
+
+<form role="form" method="POST" action="{% url 'send_direct' %}">
+  {% csrf_token %}
+<article class="" style="    display: inline-flex;  width:100%;position: fixed;
+    bottom: 50px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start; width:100%; margin-bottom:-10px; padding-left:5px;
+    align-items: flex-start;">
+<div>
+      <figure class="image">
+          {% if user.profile.picture %}
+            <a   href="{% url 'profile' user %}"><img style="width:40px; height:40px; border-radius:40px;" src="{{ user.profile.picture.url }}" alt="Placeholder image"></a>
+          {% else %}
+            <img  style="width:40px; height:40px; border-radius:40px;" src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+          {% endif %}
+      </figure>
+    </div>
+  <div class="" style="    display: inline-flex; 
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start; width:100%;
+    align-items: flex-start;">
+    <input type="hidden" name="to_user" value="{{ active_direct }}">
+    <div class="field" style="
+    width: 92%;padding-left:4px;
+">
+      <p class="">
+        <input class="" style="height:39px;width:100%;border-color: black; border-radius:30px;    outline: 0;" name="body" placeholder="   message..."></input>
+      </p>
+    </div>
+    
+      <div class="" style="">
+      
+          <button type="submit" name="action" style="border-radius:30px; margin-left:-48px;margin-top:1px;border-color:black; " class="btn btn-outline-info"><img style="height: 20px;" class="" src="../../../../../../static/img/send.png"></buttom>
+        </div>
+      
+   
+  </div>
+</article>
+</form>
+
+</div>
+</div>
+`;
+ }
+</script>
+
+{% endif %}
+{% endblock %}

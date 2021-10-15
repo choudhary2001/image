@@ -1,0 +1,952 @@
+{% extends 'base.html' %} {% load static %} {% load humanize %} {% block content %}
+{% load crispy_forms_tags %}
+{% load social_share %}
+
+<style>
+body{
+  	background-color: beige !important;
+}
+.whatsapp-this a {
+  text-decoration:none !important;
+}
+.facebook-this a {
+  text-decoration:none !important;
+}
+
+  #id_body {
+    height: 50px;
+    margin-left: 60px;
+    margin-top: -55px;
+    max-width: 83%;
+    border-radius: 50px;
+    border-color: blue;
+  }
+  #div_id_body label{
+    display:none;
+  }
+   @media screen and (max-width: 2000px) {
+    #img {
+      max-width: 700px;
+    }
+    #user {
+      font-size: 35px;
+    }
+    #word {
+      width:550px;
+    }
+  }
+  @media screen and (max-width: 1500px) {
+    #img {
+      max-width: 600px;
+    }
+    #user {
+      font-size: 35px;
+    }
+    #word {
+      width:400px;
+    }
+  }
+  @media screen and (max-width: 1300px) {
+    #img {
+      max-width: 500px;
+    }
+    #user {
+      font-size: 30px;
+    }
+      #word {
+      width:350px;
+    }
+  }
+  @media screen and (max-width: 1100px) {
+    #img {
+      max-width: 430px;
+    }
+    #user {
+      font-size: 26px;
+    }
+      #word {
+      width:320px;
+    }
+  }
+  @media screen and (max-width: 990px) {
+    #img {
+      max-width: 400px;
+    }
+    #user {
+      font-size: 20px;
+    }
+    #username {
+      font-size: 14px;
+    }
+    #ccardd {
+      width: 100% !important;
+    }
+      #word {
+      width:260px;
+    }
+  }
+
+  @media screen and (max-width: 810px) {
+    #img {
+      max-width: 340px;
+    }
+    #user {
+      font-size: 18px;
+    }
+    #username {
+      font-size: 12px;
+    }
+    #ccardd {
+      width: 100% !important;
+    }
+    #id_body{
+      max-width:73% !important;
+    border-radius: 50px;
+    border-color: blue;
+    }
+    #submit {
+      margin-left:-10px;
+      margin-right:5px;
+    }
+        #word {
+      width:210px;
+    }
+  }
+ @media screen and (max-width: 750px) {
+    #img {
+      max-width: 100%;
+    }
+
+
+    #ccardd {
+      width: 100% !important;
+    }
+    #word {
+      width:340px;
+    }
+
+  }
+  @media screen and (max-width: 500px) {
+    #word {
+      width:260px;
+    }
+      #img {
+      max-width: 100%;
+      height: auto !important;
+    }
+    #video{
+      max-width: 100%;
+      height: auto !important;
+    }
+  }
+  @media screen and (max-width: 350px) {
+  #hr{
+    width:90% !important;
+  }
+    #ccardd {
+      width: 100% !important;
+    }
+    #userimg {
+      max-width: 60px !important;
+       max-height: 60px !important;
+    }
+    #user {
+      font-size: 14px;
+    }
+    #username {
+      font-size: 10px;
+      margin-top:-25px !important;
+      padding-left:80px !important;
+    }
+   #word {
+      width:230px;
+    }
+      #img {
+      max-width: 100%;
+      height: auto !important;
+    }
+    #video{
+      max-width: 100%;
+      height: auto !important;
+    }
+    }
+@media screen and (max-width: 325px) {
+
+   #word {
+      width:200px;
+    }
+    }
+  @media screen and (max-width: 300px) {
+
+   #word {
+      width:170px;
+    }
+      #img {
+      max-width: 100%;
+      height: auto !important;
+    }
+    #video{
+      max-width: 100%;
+      height: auto !important;
+    }
+    }
+  @media screen and (max-width: 280px) {
+
+   #word {
+      width:140px;
+    }
+      #img {
+      max-width: 100%;
+      height: auto !important;
+    }
+    #video{
+      max-width: 100%;
+      height: auto !important;
+    }
+    }
+</style>
+
+<div
+  id="ccard"
+  style="
+    display: flex;
+    justify-content: center;
+    align-items: center; padding-top:10px;
+    align-content: center;
+  "
+>
+
+  <div id="ccardd" class="card shadow" style="width: 90%; border-radius: 30px">
+    <div
+      class=""
+      style="
+        display: inline-flex;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+      "
+    >
+      <div
+        class=""
+        style="
+          width: 50%;
+          display: inline-flex;
+          height: 100% !important;
+          flex-wrap: nowrap;
+          flex-direction: row;
+          align-content: center;
+          justify-content: center;
+          align-items: center;
+        "
+      >
+        {% for cont in post.content.all %}
+        <!-- Full-width images with number and caption text -->
+        <div class="">
+          {% if cont.file.name|slice:"-4:" == 'jpeg' or cont.file.name|slice:"-3:" == 'png' or cont.file.name|slice:"-3:" == 'jpg' %}
+          <figure class="">
+            <img
+              id="img"
+              style="border-radius: 30px;  margin-bottom:-15px;"
+              src="{{ cont.file.url }}"
+              alt="Placeholder image"
+            />
+          </figure>
+          {% else %}
+          <a href="{{ cont.get_absolute_url }}">
+            <video
+              id="img" style="border-radius: 30px"
+              controls
+              autoplay
+              muted
+              loop="true"
+              preload="metadata"
+            >
+              <source
+                id="img"
+                style="border-radius: 30px"
+                src="{{ cont.file.url }}#t=0.5"
+                type="video/mp4"
+              />
+            </video>
+          </a>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      <div
+        class="card"
+        style="
+          width: 50%;
+          display: inline-flex;
+          border-left-width: 1px;
+          border-left-color: blue;
+          border-top-color: white;
+          border-bottom-color: white;
+          border-right-color: white;
+          height: 100%;
+          flex-wrap: nowrap;
+          flex-direction: row;
+          align-content: center;
+          justify-content: center;
+          align-items: center;
+          border-top-left-radius: 0px;border-bottom-left-radius: 0px;
+          border-top-right-radius: 20px;
+          border-bottom-right-radius: 30px;
+        "
+      >
+        <div
+          class=""
+          style="
+            display: inline-flex;
+            flex-direction: column;
+            align-content: center;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+          "
+        >
+          <div class="">
+            <figure class="" style="padding-top: 30px">
+              {% if post.user.profile.picture %}
+              <a
+                style="text-decoration: none"
+                href="{% url 'profile' post.user %}"
+                ><img
+                  style="width: 100px; height: 100px; border-radius: 50px;"
+                  src="{{ post.user.profile.picture.url }}"
+                  alt="Placeholder image" />&nbsp
+                <strong id="user" style="color: black; text-decoration: none"
+                  >{{ post.user.profile.first_name }} {{ post.user.profile.last_name }}</strong
+                ><br
+              /></a>
+              <div
+                id="username"
+                style="margin-top: -40px !important; padding-left: 120px"
+              >
+                <strong>@{{ post.user.username }}</strong>
+              </div>
+              {% else %}
+              <a
+                style="text-decoration: none"
+                href="{% url 'profile' post.user %}"
+                >
+              <img style="  width:60px; height:60px; border-radius:50px;"
+                src="https://bulma.io/images/placeholders/96x96.png"
+                alt="Placeholder image"
+              /></a>
+              {% endif %}
+            </figure>
+          </div>
+
+          <div
+            class="card-content"
+            style="padding-left: 50px; word-wrap: break-word; padding-top:5px;"
+          >
+            {{ post.caption }}
+            <p>
+              {% for tag in post.tags.all %}<a style="text-decoration:none;" href="{{ tag.get_absolute_url }}"
+                >#{{ tag }}&nbsp</a
+              >{% endfor %}
+            </p>
+            <br />
+          </div>
+
+          <div
+            style="
+              display: inline-flex;
+              flex-wrap: nowrap;
+              flex-direction: row;
+              justify-content: space-evenly;
+              align-content: center;
+              align-items: flex-start;
+              width: 100%;
+            "
+          >
+          {% if liked is True %}
+            <div class="">
+              <a href="{% url 'postlike' post.id %}"
+                ><img style="padding-left:10px; margin-top:-5px;" class="" src="../static/img/like.png"></a
+              >
+              <small><p >{{ post.likes }} Likes</p></small>
+            </div>
+          {% else %}
+            <div class="">
+              <a href="{% url 'postlike' post.id %}"
+                ><img style="padding-left:8px;" class=""  src="../static/img/heart.png"></a
+              >
+              <small><p >{{ post.likes }} Likes</p></small>
+            </div>
+          {% endif %}
+            {% if favorited is True %}
+
+            <div class="">
+              <a href="{% url 'postfavorite' post.id %}"
+                ><img style="padding-left:5px;height:30px;" class="" src="../static/img/password.png"></a
+              >
+             <small> <p>Saved</p></small>
+            </div>
+            {% else %}
+
+            <div class="">
+              <a href="{% url 'postfavorite' post.id %}"
+                ><img style="padding-left:15px;height:30px;" class="" src="../static/img/save-file.png">
+                  
+                </a
+              >
+              <small><p>Save Post</p></small>
+            </div>
+
+            {% endif %}
+            {% for cont in post.content.all %}
+            <div style="">
+              <a
+                class=""
+                style="right: 0"
+                href="{{  cont.file.url }}"
+                download="{{  cont.file.url }}"
+                ><img style="padding-left:20px;height:30px;" class="" src="../static/img/download.png"></a
+              >
+              <small><p>Download</p></small>
+            </div>
+            {% endfor %}
+            <div>
+            <small><button class="btn btn-sm " style="text-decoration:none;margin-top:-5px;"><img style="width:30px;text-decoration:none;" src="../static/img/chat-bubble.png"/>{% post_to_whatsapp  object_or_url " Whatsapp" %}</button>
+            </small>
+            </div>
+            <div>
+            <button class="btn btn-sm " style="margin-top:-5px;"><img style="width:30px " src="../static/img/facebook.png"/>{% post_to_facebook object_or_url "Facebook" %}</button>
+
+            </div>
+          </div>
+          <hr style="width: 100%" />
+          <div class="" style="">
+            {% if request.user.profile.picture %}
+            <a href="{% url 'profile' request.user %}"
+              ><img
+                style="
+                  width: 45px;
+                  height: 45px;
+                  border-radius: 40px;
+                  margin-bottom: -16px;
+                "
+                src="{{ request.user.profile.picture.url }}"
+                alt="Placeholder image"
+            /></a>
+            {% else %}
+            <a href="{% url 'profile' request.user %}"
+              ><img
+                style="width: 45px; height: 45px; border-radius: 40px;margin-bottom: -16px;"
+                src="https://bulma.io/images/placeholders/96x96.png"
+                alt="Placeholder image"
+            /></a>
+            {% endif %}
+
+            <form method="post" action="" role="form">
+              {% csrf_token %}
+              <div class="field" style="display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    align-items: center;">
+                <p class="control">{{ form|crispy }}</p>
+
+                <p class="control">
+                {% if user.is_authenticated %}
+                  <button
+                    id="submit"
+                    type="submit"
+                    style="margin-top:-45px;"
+                    name="action"
+                    class="btn btn-outline-primary form-control"
+                  >
+                   <img style="height: 20px;" class="" src="../../../../../../static/img/send.png">
+                  </button>
+                  {% else %}
+                  <a href="{% url 'login' %}" 
+                  
+                    style="margin-left: 60px; width: 83%"
+                    class="btn btn-primary form-control"
+                  >
+                    Post comment
+                  </a>
+                  {% endif %}
+                </p>
+              </div>
+            </form>
+          </div>
+          {% if comments %}
+<button  class="btn btn-outline-danger"  data-toggle="modal" style="margin-left:60px;width:50%; border-radius:30px; margin-bottom:10px;"
+            data-target="#myModal">comments</button>{% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row" style=" padding-top:45px;"> 
+  <div class="column" style=" display: inline-flex;  
+    justify-content: space-evenly;
+
+    align-items: stretch;
+
+    flex-wrap: wrap;
+    flex-direction: row;">
+  {% for post_item in posts %}
+   {% if post_item.content.first.file.name|slice:"-4:" == 'jpeg' or post_item.content.first.file.name|slice:"-3:" == 'png' or post_item.content.first.file.name|slice:"-3:" == 'jpg' %}
+    <div class="" id="card" style=" ">
+    <figure class="" style="">
+      <a href="{{ post_item.get_absolute_url }}">
+        <img id="img" style="border-radius:20px; height:260px; " class="" src="{{ post_item.content.first.file.url }}" alt="Placeholder image">
+      </a>
+    </figure>
+  
+
+     </div>
+
+  {% else %}
+  <div class="" id="card" style="  border-radius:20px; border-color:blue; border-width:5px; ">
+   <div style="    margin-left: -5px;
+    margin-right: -5px;">
+   <a href="{{ post_item.get_absolute_url }}">
+      <video id="video"  width=""  controls autoplay muted loop="true" preload="metadata" style="border-radius:20px;margin-top:-5px !important;  height:260px; ">
+        <source  style="border-radius:20px;" src="{{ post_item.content.first.file.url }}#t=0.5" type="video/mp4">        
+      </video>      
+    </a>
+    </div>
+
+
+    </div>
+    
+  {% endif %}
+
+  
+  {%endfor %}
+  
+
+</div>
+
+
+ <div class="container" style="">
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="myModal"
+      role="dialog"
+      style="margin-top: 70px; "
+    >
+      <div class="modal-dialog" style="    padding-bottom: 120px;">
+        <!-- Modal content-->
+        <div class="modal-content" style="border-color: blue;
+    border-width: 2px;">
+          <div class="modal-header" style="">
+            <h4 class="modal-title">Comments</h4>
+<img data-dismiss="modal" style=" padding:10px; height:30px; width:30px;" class="" src="../../../../../static/img/cancel.png">
+          </div>
+          <div class="modal-body">
+            <div class="col">
+          <div class="" style="">
+            {% if request.user.profile.picture %}
+            <a href="{% url 'profile' request.user %}"
+              ><img
+                style="
+                  width: 45px;
+                  height: 45px;
+                  border-radius: 40px;
+                  margin-bottom: -16px;
+                "
+                src="{{ request.user.profile.picture.url }}"
+                alt="Placeholder image"
+            /></a>
+            {% else %}
+            <a href="{% url 'profile' request.user %}"
+              ><img
+                style="width: 45px; height: 45px; border-radius: 40px;margin-bottom: -16px;"
+                src="https://bulma.io/images/placeholders/96x96.png"
+                alt="Placeholder image"
+            /></a>
+            {% endif %}
+
+            <form method="post" action="" role="form">
+              {% csrf_token %}
+              <div class="field" style="display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    align-items: center;">
+                <p class="control">{{ form|crispy }}</p>
+
+                <p class="control">
+                {% if user.is_authenticated %}
+                  <button
+                    id="submit"
+                    type="submit"
+                    style="margin-top:-45px; margin-left:10px;"
+                    name="action"
+                    class="btn btn-outline-primary form-control"
+                  >
+                   <img style="height: 20px;" class="" src="../../../../../../static/img/send.png">
+                  </button>
+                  {% else %}
+                  <a href="{% url 'login' %}" 
+                    id="submit"
+                    style="margin-top:-45px; margin-left:10px;"
+                    class="btn btn-outline-primary form-control"
+                  >
+                  <img style="height: 20px;" class="" src="../../../../../../static/img/send.png">
+                  
+                  </a>
+                  {% endif %}
+                </p>
+              </div>
+            </form>
+          </div>
+          <div class="">
+            {% for comment in comments %}
+            <hr />
+
+            <div class="" style="padding-left: 40px; width: 80%">
+              {% if comment.user.profile.picture %}
+              <a href="{% url 'profile' comment.user %}">
+                <img
+                  style="width: 45px; height: 45px; border-radius: 40px"
+                  src="{{ comment.user.profile.picture.url }}"
+                  alt="Placeholder image"
+              /></a>
+              {% else %}
+              <a href="{% url 'profile' comment.user %}">
+                <img
+                style="width: 45px; height: 45px; border-radius: 40px"
+                  src="https://bulma.io/images/placeholders/96x96.png"
+                  alt="Placeholder image"
+              /></a>
+              {% endif %}
+             
+              <p id="word"
+                style="
+                  margin-top: -50px;
+                  margin-left: 60px; 
+                "
+              >
+                {% if comment.user.profile.first_name %}
+                <a
+                  style="text-decoration: none; color: black"
+                  href="{% url 'profile' comment.user %}"
+                  ><strong
+                    >{{ comment.user.profile.first_name }} {{ comment.user.profile.last_name }}</strong
+                  ><span style="margin-top: -95px"
+                    ><small><br />@{{ comment.user.username }}</small></span
+                  ></a
+                >
+                
+                {% else %}
+                <strong>Unknown</strong>
+                {% endif %}
+                 {% if user.is_authenticated and user == comment.user.profile.user %}
+                <a style="" href="{% url 'delete-comment'  comment.id %}" class="delete"><img style=" padding:10px; height:40px;right: 10px; position: absolute;" class="" src="../../../../../static/img/delete.png"></a>
+                {% endif %}
+                <br />
+                {{ comment.body }}
+                
+                <br />
+                <small>{{ comment.date|naturaltime }}</small>
+              </p>
+            </div>
+
+            {% endfor %}
+          </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn"
+              data-dismiss="modal"
+              style=" background-color: blue; color:white;"
+            >
+              close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<script type="text/javascript">
+    if (document.body.offsetWidth < 750) {
+      document.body.style.backgroundColor = "";
+      document.getElementById("ccard").innerHTML = `
+<style>
+  @media screen and (max-width: 400px) {
+#id_body{
+  width:75%;
+}
+    }
+  @media screen and (max-width: 290px) {
+#id_body{
+  width:65%;
+}
+    }
+</style>
+  <div class="" style="border-radius:30px; ">
+  <div class="" >
+
+    <div class="" style="width:100%;">
+      
+    {% for cont in post.content.all %}
+      <!-- Full-width images with number and caption text -->
+      <div class=""  style="width:100%; border-radius:30px;">
+      {% if cont.file.name|slice:"-4:" == 'jpeg' or cont.file.name|slice:"-3:" == 'png' or cont.file.name|slice:"-3:" == 'jpg' %}
+          <figure class="">
+            
+              <img id="img" style="border-radius:30px; width:100%; " src="{{ cont.file.url }}" alt="Placeholder image">
+        
+          </figure>
+        {% else %}
+          <a href="{{ cont.get_absolute_url }}">
+            <video id="img" style="border-radius: 30px" controls autoplay muted loop="true" preload="metadata">
+              <source id="img" style="border-radius: 30px" src="{{ cont.file.url }}#t=0.5" type="video/mp4">        
+            </video>      
+          </a>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+ 
+  <div class="card" style="width:100%;display: inline-flex;  
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    align-items: center; border-radius:30px;">
+    <div class="" style="display: inline-flex; 
+    flex-direction: column;
+    align-content: center;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;">
+
+      <div class="">
+        <figure class="" style="padding-top:30px; ">
+          {% if post.user.profile.picture %}
+            <a style="text-decoration:none;" href="{% url 'profile' post.user %}"><img id="userimg" style="  width:60px; height:60px; border-radius:50px;" src="{{ post.user.profile.picture.url }}" alt="Placeholder image">&nbsp
+         <strong id="user" style="color:black; text-decoration:none; ">{{ post.user.profile.first_name }} {{ post.user.profile.last_name }}</strong><br></a>
+         <div id="username" style=" margin-top:-25px; padding-left:70px;"><strong >@{{ post.user.username }}</strong></div>
+          {% else %}
+            <img style="  width:60px; height:60px; border-radius:50px;" src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+          {% endif %}
+        </figure>
+      </div>
+
+      <div class="card-content" style="padding-left:20px; padding-right:10px; word-wrap: break-word; padding-top:10px;">
+ 
+      {{ post.caption }}
+      <p>{% for tag in post.tags.all %}<a style="text-decoration:none;" href="{{ tag.get_absolute_url }}">#{{ tag }}&nbsp</a>{% endfor %}</p>
+      <br>
+      
+      </div>
+    
+<div class="" style="display: inline-flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+    width: 80%;">
+
+  {% if liked is True %}
+            <div class="">
+              <a href="{% url 'postlike' post.id %}"
+                ><img style="padding-left:10px; height:28px;" class="" src="../static/img/like.png"></a
+              >
+              <small><p >{{ post.likes }} Likes</p></small>
+            </div>
+          {% else %}
+            <div class="">
+              <a href="{% url 'postlike' post.id %}"
+                ><img style="padding-left:8px; height:28px;" class=""  src="../static/img/heart.png"></a
+              >
+              <small><small><p >{{ post.likes }} Likes</p></small></small>
+            </div>
+          {% endif %}
+            {% if favorited is True %}
+
+            <div class="">
+              <a href="{% url 'postfavorite' post.id %}"
+                ><img style="padding-left:5px;height:24px;" class="" src="../static/img/password.png"></a
+              >
+              <small><small><p>Saved</p></small></small>
+            </div>
+            {% else %}
+
+            <div class="">
+              <a href="{% url 'postfavorite' post.id %}"
+                ><img style="padding-left:15px;height:24px;" class="" src="../static/img/save-file.png">
+                  
+                </a
+              >
+              <small><small><p>Save Post</p></small></small>
+            </div>
+
+            {% endif %}
+            {% for cont in post.content.all %}
+            <div style="">
+              <a
+                class=""
+                style="right: 0"
+                href="{{ cont.file.url }}"
+                download="{{ cont.file.url }}"
+                ><img style="padding-left:20px;height:24px;" class="" src="../static/img/download.png"></a
+              >
+              <small><small><p>Download</p></small></small>
+  
+            </div>
+            {% endfor %}
+            </div>
+            <div style="display: inline-flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-content: center;
+    align-items: center;
+    width: 80%;">
+            <div>
+            <small><small><button class="btn btn-sm " style="text-decoration:none;margin-top:-10px;"><img style="height:24px;text-decoration:none;" src="../static/img/chat-bubble.png"/>{% post_to_whatsapp  object_or_url " Whatsapp" %}</button>
+            </small></small>
+            </div>
+            <div>
+            <button class="btn btn-sm " style="margin-top:-10px;"><img style="height:24px;" src="../static/img/facebook.png"/>{% post_to_facebook object_or_url "Facebook" %}</button>
+
+            </div>
+            </div>
+
+<hr id="hr" style="width:90%;" />
+          <div class="" style="width:90%;">
+            {% if request.user.profile.picture %}
+            <a href="{% url 'profile' request.user %}"
+              ><img
+                style="
+                  width: 45px;
+                  height: 45px;
+                  border-radius: 40px;
+                  margin-bottom: -16px;
+                "
+                src="{{ request.user.profile.picture.url }}"
+                alt="Placeholder image"
+            /></a>
+            {% else %}
+            <a href="{% url 'profile' request.user %}"
+              ><img
+                style="width: 45px; height: 45px; border-radius: 40px;margin-bottom: -16px;"
+                src="https://bulma.io/images/placeholders/96x96.png"
+                alt="Placeholder image"
+            /></a>
+            {% endif %}
+
+            <form method="post" action="" role="form">
+              {% csrf_token %}
+              <div class="field" style="display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    align-items: center;">
+                <p class="control">{{ form|crispy }}</p>
+
+                <p class="control">
+                {% if user.is_authenticated %}
+                  <button
+                    id="submit"
+                    type="submit"
+                    style="margin-top:-45px; margin-left:10px;"
+                    name="action"
+                    class="btn btn-outline-primary form-control"
+                  >
+                   <img style="height: 20px;" class="" src="../../../../../../static/img/send.png">
+                  </button>
+                  {% else %}
+                  <a href="{% url 'login' %}" 
+                    id="submit"
+                    style="margin-top:-45px; margin-left:10px;"
+                    class="btn btn-primary form-control"
+                  >
+                  <img style="height: 20px;" class="" src="../../../../../../static/img/send.png">
+                  
+                  </a>
+                  {% endif %}
+                </p>
+              </div>
+            </form>
+          </div>
+          <div class="" style="display: inline-flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: space-between;
+    align-items: center;
+    justify-content: center;">
+            {% for comment in comments %}
+            <hr id="hr" / style="width:90%;">
+
+            <div class="" style=" ">
+              {% if comment.user.profile.picture %}
+              <a href="{% url 'profile' comment.user %}">
+                <img
+                  style="width: 45px; height: 45px; border-radius: 40px"
+                  src="{{ comment.user.profile.picture.url }}"
+                  alt="Placeholder image"
+              /></a>
+              {% else %}
+              <a href="{% url 'profile' comment.user %}">
+                <img
+                style="width: 45px; height: 45px; border-radius: 40px"
+                  src="https://bulma.io/images/placeholders/96x96.png"
+                  alt="Placeholder image"
+              /></a>
+              {% endif %}
+
+              <p id="word"
+                style="
+                  margin-top: -50px;
+                  margin-left: 60px;
+                  word-wrap: break-word;
+                "
+              >
+                {% if comment.user.profile.first_name %}
+                <a
+                  style="text-decoration: none; color: black"
+                  href="{% url 'profile' comment.user %}"
+                  ><strong
+                    >{{ comment.user.profile.first_name }} {{ comment.user.profile.last_name }}</strong
+                  ><span style="margin-top: -95px"
+                    ><small><br />@{{ comment.user.username }}</small></span
+                  ></a
+                >
+                {% else %}
+                <strong>Unknown</strong>
+                {% endif %}
+                 {% if user.is_authenticated and user == comment.user.profile.user %}
+                  <a style="" href="{% url 'delete-comment'  comment.id %}" class="delete"><img style=" padding:10px; height:40px;right: 10px; position: absolute; " class="" src="../../../../../static/img/delete.png"></a>
+                {% endif %}
+                <br />
+                {{ comment.body }}
+                <br />
+                <small>{{ comment.date|naturaltime }}</small>
+              </p>
+            </div>
+
+            {% endfor %}
+
+
+</div>
+</div>
+</div>
+  </div>
+</div>
+</div>
+`;
+ }
+</script>
+
+
+
+
+{% endblock %}
+</div>

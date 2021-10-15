@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block banner %}
+<section class="" style="padding-top:55px; position:fixed;width:100%;">
+  <div class="">
+    <div class="container-fluid" style="width:100%;background-color: lemonchiffon; padding-top:10px;">
+      <h3 style="font-size: 50px" class="title">
+        #{{ tag.title }}
+      </h3>
+<hr style="width:100%;">
+
+    </div>
+  </div>
+  
+</section>
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<style>
+
+
+
+/* Responsive layout - makes a two column-layout instead of four columns */
+@media screen and (max-width: 800px) {
+  #card {
+   
+    width: 49%;
+   
+  }
+    #img{
+   
+    width: 100%;
+   
+  }
+  #video{
+   
+    width: 100%;
+   
+  }
+}
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  #card {
+   
+    width: 100%;
+  
+  }
+  #img{
+   
+    width: 100%;
+    height:auto !important;
+   
+  }
+  #video{
+   
+    width: 100%;
+   
+  }
+}
+</style>
+
+
+<!-- Header -->
+
+<!-- Photo Grid -->
+<div class="row" style=" margin-top:80px;"> 
+  <div class="column" style=" display: inline-flex;  
+    justify-content: space-evenly;
+
+    align-items: stretch;
+
+    flex-wrap: wrap;
+    flex-direction: row;">
+  {% for post_item in posts %}
+   {% if post_item.content.first.file.name|slice:"-4:" == 'jpeg' or post_item.content.first.file.name|slice:"-3:" == 'png' or post_item.content.first.file.name|slice:"-3:" == 'jpg' %}
+    <div class="" id="card" style=" ">
+    <figure class="" style="">
+      <a href="{{ post_item.get_absolute_url }}">
+        <img id="img" style="border-radius:20px; height:260px; " class="" src="{{ post_item.content.first.file.url }}" alt="Placeholder image">
+      </a>
+    </figure>
+  
+
+     </div>
+
+  {% else %}
+  <div class="card" id="card" style=" margin-bottom:15px !important;  border-radius:20px; ">
+   <div style="    margin-left: -5px;
+    margin-right: -5px;">
+   <a href="{{ post_item.get_absolute_url }}">
+      <video id="video"  width=""  controls autoplay muted loop="true" preload="metadata" style="border-radius:20px;margin-top:-5px !important;  height:260px; ">
+        <source  style="border-radius:20px;" src="{{ post_item.content.first.file.url }}#t=0.5" type="video/mp4">        
+      </video>      
+    </a>
+    </div>
+
+
+    </div>
+    
+  {% endif %}
+
+  
+  {%endfor %}
+  
+
+</div>
+
+</body>
+
+
+
+
+{% endblock %}

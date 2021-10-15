@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<style>
+body{
+    background-color:beige;
+}
+
+</style>
+
+<div style="margin-top:30px;">
+<a class='card shadow' style="text-decoration:blink; text-align:center;padding:20px;background-color: white;" href="{% url 'profile' user %}">Profile</a>
+<hr>
+<a class='card shadow' style="text-decoration:blink; text-align:center;padding:20px;background-color: white;" href="{% url 'change_password' %}">Password Change</a>
+<hr>
+<a class='card shadow' style="text-decoration:blink;text-align:center;padding:20px;background-color: white;" href="">Business Account</a>
+<hr>
+<a class='card shadow' style="text-decoration:blink;text-align:center;padding:20px;background-color: white;" href="{% url 'logout' %}">Log out</a>
+
+
+</div>
+
+
+{% endblock %}

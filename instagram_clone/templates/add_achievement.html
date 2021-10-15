@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<style>
+nav{
+  background-color:aliceblue !important;
+}
+body{
+   background-color:aliceblue !important;
+}
+#id_caption{
+  border-color: white; 
+  height: 100px;
+}
+</style>
+<div class="columns " style=" background-color:aliceblue;">
+  <div class=""  style="display: flex;
+    justify-content: center; width:100%;
+    align-items: center;">
+
+    <div class="card mt-4 mb-4 ml-auto mr-auto" style="border: white; width:80%; background-color:aliceblue;">
+  
+
+    <form method="post" action="" enctype="multipart/form-data" role="form">
+    {% csrf_token %}
+    <h3 class="title text-center">Add your Achivement</h3>
+<hr style="color:black !important; width:100%;">
+            <div class="field" style="">
+              <p class="control has-icons-left">
+                {{ form | crispy }}
+
+              <label class="label is-medium">Choose your files</label>
+         
+        </p>
+
+
+      <div class="field">
+      <p class="control">
+        <button type="submit" name="action" class="btn btn-outline-info" style="width:100%;">
+          Submit
+        </button>
+      </p>
+    </div>
+
+
+</div>
+</div>
+</div>
+
+
+
+
+
+
+{% endblock %}

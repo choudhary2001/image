@@ -1,0 +1,775 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+     <title> {% block title %} {% endblock %} Image </title>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"
+      integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+      integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    {% block style %}
+    {% endblock style %}
+    <style>
+      @media screen and (max-width: 260px) {
+        #navv {
+          margin-left: -23px !important;
+        }
+      }
+      @media screen and (max-width: 721px) {
+        #navvvvvv {
+          height: 65px !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav
+      class="navbar navbar-expand-lg navbar-dark"
+      id="navvvvvv"
+      style="
+        position: fixed;
+        background-color: beige;
+        height: 75px;
+        margin-top: -5px;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1098;
+      "
+    >
+      <div
+        class="container"
+        style="
+          display: flex;
+          -ms-flex-wrap: wrap;
+          flex-wrap: nowrap;
+          -ms-flex-align: center;
+          align-items: center;
+          -ms-flex-pack: justify;
+          justify-content: space-between;
+          flex-direction: row;
+          align-content: center;
+        "
+      >
+        <a class="navbar-brand" style="color: black" href="{% url 'index' %}"
+          >Image</a
+        >
+        <a style="text-decoration:none; width:100%;" href="{% url 'search' %}">
+        <form
+          class="form-inline"
+          style="width: 100%; margin: auto"
+          
+        >
+          <div class="input-group">
+            <input
+              name="q"
+              type="text"
+              value="{{ request.GET.q }}"
+              style="border-radius: 15px; width: 100%; margin: auto"
+              class="form-control"
+              placeholder="  search . . ."
+            />
+          </div>
+        </form>
+        </a>
+
+        <a
+          href="{% url 'show-notifications' %}"
+          class="nav-link"
+          style="color: black"
+        >
+          <img
+            style="padding-left: 25px"
+            class=""
+            src="../../../../static/img/notifications.png"
+          />
+          {% if count_notifications %}
+          <span
+            class="badge"
+            style="margin-top: -21px; margin-left: -35px; color: black"
+            >{{ count_notifications }}</span
+          >
+          {% endif %}
+          <small>Notifications</small>
+        </a>
+        {% if directs_count %}
+        <span
+          class="badge"
+          style="margin-top: -23px; margin-right: -43px; color: black"
+          >{{ directs_count }}</span
+        >
+        {% endif %}
+        <a href="{% url 'inbox' %}" class="nav-link" style="color: black">
+          <img
+            style="padding-left: 5px"
+            class=""
+            src="../../../../../static/img/inbox.png"
+          />
+          <small>Inbox</small>
+        </a>
+      {% if user.is_authenticated %}
+      <a href="{% url 'profile' request.user %}" class="nav-link " style="color:black;">
+        {% if request.user.profile.picture %}
+        
+        <img style="height:32px; width:32px; border-radius:50px; margin-left:5px;" class="" src="{{ request.user.profile.picture.url }}">
+        <small>{{ request.user.profile.first_name }}</small> 
+        {% else %}
+        <img style="height:32px; width:32px; border-radius:50px;  " class="" src="https://bulma.io/images/placeholders/256x256.png">
+        <small>{{ request.user.username }}</small>
+        {% endif %}</a>
+        {% else %}
+        <a href="{% url 'login' %}" class="nav-link " style="color:black;">
+        <img style="height:32px; width:32px; border-radius:50px;  " class="" src="https://bulma.io/images/placeholders/256x256.png">
+        <small>login</small>
+        </a>
+        {% endif %} 
+      </div>
+    </nav>
+
+    {% block banner %} {% endblock %}
+
+
+
+<style>
+
+
+
+/* Responsive layout - makes a two column-layout instead of four columns */
+@media screen and (max-width: 800px) {
+  #card {
+   
+    width: 49%;
+   
+  }
+    #img{
+   
+    width: 100%;
+    height:auto !important;
+   
+  }
+  #video{
+   
+    width: 100%;
+   
+  }
+}
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  #card {
+   
+    width: 100%;
+  
+  }
+  #img{
+   
+    width: 100%;
+    height:auto !important;
+   
+  }
+  #video{
+   
+    width: 100%;
+   
+  }
+  #background{
+    height:200px !important;
+    width:100% !important;
+  }
+  #profile{
+    height:100px !important;
+    width:100px !important;
+    margin-top:-60px !important;
+  }
+}
+@media screen and (max-width: 450px) {
+  #message{
+    display:none;
+  }
+}
+@media screen and (min-width: 451px) {
+  #message1{
+    display:none;
+  }
+}
+@media screen and (min-width: 800px) {
+#delete:hover{
+  opacity:1 !important;
+}
+}
+@media screen and (max-width: 800px) {
+#delete{
+  opacity:1 !important;
+}
+#addimage{
+  width:20px !important;
+}
+}
+@media screen and (max-width: 600px) {
+#delete{
+  opacity:1 !important;
+  height:30px;
+}
+}
+@media screen and (max-width: 400px) {
+#delete{
+  opacity:1 !important;
+  height:28px;
+}
+
+}
+@media screen and (max-width: 500px) {
+#delet #delete{
+  right:55px !important;
+}
+@media screen and (max-width: 400px) {
+#delet #delete{
+  right:50px !important;
+}
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+<section class="" style="">
+  {% if profile.background %}
+  <img  id="background" style="width:100%; height:250px; padding-top:20px;
+    " class="text-center" src="{{ profile.background.url }}">
+          {% else %}
+    <img id="background" style="width:100%; height:250px;" class="" src="https://bulma.io/images/placeholders/256x256.png">
+        {% endif %}
+  <div class="" style="display: inline-flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-around;
+    align-items: center; width:100%">
+      <figure class="">
+
+        {% if profile.picture %}
+          <img class="card" id="profile" style="height:140px; width:140px; border-radius:70px; margin-top:-100px;    border-color: white;border-width: 5px;" class="" src="{{ profile.picture.url }}">
+        {% else %}
+          <img class="card" id="profile" style="height:140px; width:140px; border-radius:70px;margin-top:-100px; border-color: white;border-width: 5px;" class="" src="https://bulma.io/images/placeholders/256x256.png">
+        {% endif %}
+
+      </figure>
+  
+
+   <div class="">
+
+{% if user.is_authenticated and user == profile.user %}
+  <a style="position:absolute; right:80px; top:80px;"  href="{% url 'edit-profile' %}" class=""><img style="background-color:white; padding:5px; border-radius:10px;" class="" src="../../../../static/img/edit.png"></a>
+  <a style="position:absolute; right:20px; top:80px;"  href="{% url 'usersettings' %}" class=""><img style="background-color:white; padding:5px; border-radius:10px;" class="" src="../../../../static/img/settings.png"></a>
+
+{% endif %}
+    {% if user.is_authenticated and user != profile.user %}
+      <div class=""  style="padding:5px; margin-top:-45px;">
+        {% if follow_status == True %}
+          <a href="{% url 'follow' profile.user 0 %}" style="background-color:black; border-radius:20px;" type="button" class="btn btn-outline-danger">Unfollow</a>
+        {% else %}
+          <a  href="{% url 'follow' profile.user 1 %}" style="background-color:black; border-radius:20px;"  type="button" class="btn btn-outline-success">Follow</a>
+        {% endif  %}
+      
+      <a style="background-color:white; border-radius:20px;" id="message"  href="{% url 'newconversation' profile.user.username %}" type="button" class="btn btn-outline-info">message</a>
+    </div>
+    {% endif %}
+
+    </div>
+    
+ </div>
+  <h3 style="font-weight: bold; padding-left:20px;" id="name" class="title">{% if profile.first_name %}{{ profile.first_name }} {{ profile.last_name }} {% endif %}</h3>
+  <h6 style="padding-left:20px;margin-bottom:-5px;" class="" id="name1"><small>@{{ profile.user }}</small></h6>
+
+
+
+ <p class="subtitle is-5" style="padding-left:20px; margin-bottom:-3px; padding-top:5px;">{% if profile.profile_info %}{{ profile.profile_info }}{% endif %}</p>
+<a style="text-decoration:none; " href="{% if profile.url %}{{ profile.url }}{% endif %}"><p style="padding-left:20px; margin-bottom:-3px;" class="subtitle is-5">{% if profile.url %}{{ profile.url }}{% endif %}</p></a>
+<p style="padding-left:20px; margin-bottom:-3px;" class="subtitle is-5">{% if profile.location %}{{ profile.location }}{% endif %}</p>
+
+
+     {% if user.is_authenticated and user != profile.user %}
+      <div class="" id="message1" style="padding:5px; width:100%; padding-left:20px;">
+
+      
+      <a style="width:95%; background-color:black; border-radius:20px;"  href="{% url 'newconversation' profile.user.username %}" type="button" class="btn btn-outline-info">message</a>
+    </div>
+    {% endif %}
+<div style="
+">
+<hr style="margin-bottom:-1px;">
+<div class="" style="display: inline-flex; margin-bottom:-25px;padding-top:4px;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-around;
+    align-items: center; width:100%;">
+  <div class="level-item text-center">
+    <div>
+    <p style="margin-bottom:-5px;" class="title">{{ posts_count }}</p>
+      <small><p class="heading">Posts</p></small>
+      
+    </div>
+  </div>
+  <div class="level-item text-center">
+    <div>
+    <p style="margin-bottom:-5px;" data-toggle="modal"
+            data-target="#myModal" class="title">{{ following_count }}</p>
+      <small><p class="heading">Following</p></small>
+      
+    </div>
+  </div>
+  <div class="level-item text-center">
+    <div>
+    <p style="margin-bottom:-5px;" data-toggle="modal"
+            data-target="#myModal1" class="title">{{ followers_count }}</p>
+      <small ><p class="heading">Followers</p></small>
+      
+    </div>
+  </div>
+</div>
+</div>
+
+</section>
+
+
+
+
+<div style="margin-top:20px; 
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;">
+    {% if user.is_authenticated and user == profile.user %}
+<div   style=" height:120px;width:50px; border-color:blue; padding-left:5px;">
+<a style="height:120px; "  href="{% url 'add-achivement' %}">
+<img id="addimg"  style="border-radius:10px;margin-top:32px;padding:2px;width:45px;
+    " class="text-center" src="../../../../../static/img/add.png"></a>
+</div>
+{% endif %}
+<div class="card" style="    border-radius: 10px; 
+    overflow-x: scroll;border-color: white;
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: flex-start;
+    align-items: center;">
+{% if achivements %}
+{% for achivement in achivements %}
+<div style="border-radius:10px;">
+<div class="card" style="border-radius:10px; margin:2px;">
+  <img    style="height:120px;width:200px;border-radius:10px;
+    " class="text-center" src="{{ achivement.image.url }}">
+        {% if user.is_authenticated and user == profile.user %}
+      <a style=""  href="{% url 'edit-achivement' achivement.id %}" class=""><img  style="background-color:white; padding:5px; border-radius:10px;position:absolute; right:5px; top:5px; width:30px; " class="" src="../../../../static/img/edit.png"></a>
+
+      {% endif %}
+    </div>
+    </div>
+  {% endfor %}
+{% else %}
+   {% if user.is_authenticated and user == profile.user %}
+<h3 style="margin-left:10px !important;"> Add your achivements....</h3>
+{% endif %}
+{% endif %}
+ </div>
+  </div>
+
+
+
+
+
+
+
+    <div
+      class="container-fluid"
+      style="padding-top: 5px; padding-bottom: 85px"
+    >
+
+
+
+    <div class="">
+
+        <ul class="nav nav-tabs nav-justified">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" href="#posttt">
+                   <img  style="height:20px; " class="" src="../../../../../static/img/gallery.png"><br><small>Posts</small></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#profileee">
+                   <img  style=" height:20px; " class="" src="../../../../../static/img/save-time.png"><br><small>Saved</small></a>
+            </li>
+
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="posttt">
+                <div class="row" style="padding-top:15px;">
+      
+    
+      <div class="column" style=" display: inline-flex;  
+      justify-content: space-evenly;
+      align-items: stretch;
+      flex-wrap: wrap;
+      flex-direction: row;">
+       {% for post in posts %}
+
+   {% if post.content.first.file.name|slice:"-4:" == 'jpeg' or post.content.first.file.name|slice:"-3:" == 'png' or post.content.first.file.name|slice:"-3:" == 'jpg' %}
+    <figure id="img" class="card" style="border-radius:20px;">
+      <a href="{{ post.get_absolute_url }}">
+        <img id="img" style="border-radius:20px; height:260px; "  src="{{ post.content.first.file.url }}" alt="Placeholder image">
+      </a>
+      {% if user.is_authenticated and user == profile.user %}
+      <a style=""  href="{% url 'edit-post' post.id %}" class=""><img id="delete" style="background-color:white; padding:5px; border-radius:10px;position:absolute; right:10px; top:10px; opacity:0;" class="" src="../../../../static/img/edit.png"></a>
+      <a style="" id="delet"  href="{% url 'delete-post' post.id %}" class=""><img id="delete" style="background-color:white; padding:5px; border-radius:10px;position:absolute; right:70px; top:10px;opacity:0;" class="" src="../../../../static/img/delete.png"></a>
+ 
+      {% endif %}
+    </figure>
+  {% else %}
+    <div class="card"  style="border-radius:20px;">
+      <video id="img"  style="border-radius:20px; height:260px; "  controls="controls" preload="metadata">
+       <a href="{{ post.get_absolute_url }}"> 
+        <source src="{{ post.content.first.file.url }}#t=0.5" type="video/mp4">  
+       </a>
+    
+      </video>      
+      {% if user.is_authenticated and user == profile.user %}
+      <a style=""  href="{% url 'edit-post' post.id %}" class=""><img id="delete" style="background-color:white; padding:5px; border-radius:10px;position:absolute; right:10px; top:10px; opacity:0;" class="" src="../../../../static/img/edit.png"></a>
+      <a style="" id="delet"  href="{% url 'delete-post' post.id %}" class=""><img id="delete" style="background-color:white; padding:5px; border-radius:10px;position:absolute; right:70px; top:10px;opacity:0;" class="" src="../../../../static/img/delete.png"></a>
+      {% endif %}  
+</div>
+  {% endif %}
+
+    {% empty %}
+      
+      <h3 class="text-center">You do not have any post!</h3>
+    {% endfor %}
+</div>
+
+
+      </div>
+            </div>
+            <div class="tab-pane" id="profileee">
+                <div class="row" style="padding-top:15px;">
+                <div class="column" style=" display: inline-flex;  
+      justify-content: space-evenly;
+      align-items: stretch;
+      flex-wrap: wrap;
+      flex-direction: row;">  
+      {% for post in postss %}
+   {% if post.content.first.file.name|slice:"-4:" == 'jpeg' or post.content.first.file.name|slice:"-3:" == 'png' or post.content.first.file.name|slice:"-3:" == 'jpg' %}
+<figure id="img" class="">
+      <a href="{{ post.get_absolute_url }}">
+        <img id="img" style="border-radius:20px; height:260px; "  src="{{ post.content.first.file.url }}" alt="Placeholder image">
+      </a>
+    </figure>
+  {% else %}
+    <a href="{{ post.get_absolute_url }}">
+      <video id="img" style="border-radius:20px; height:260px; " width="640" controls="controls" preload="metadata">
+        <source src="{{ post.content.first.file.url }}#t=0.5" type="video/mp4">        
+      </video>      
+    </a>
+  {% endif %}
+
+
+    {% empty %}
+      
+      <h3 class="text-center">You do not save any post!</h3>
+{% endfor %}
+   </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <div class="container" style="">
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="myModal"
+      role="dialog"
+      style="margin-top: 70px; "
+    >
+      <div class="modal-dialog" style="    padding-bottom: 120px;">
+        <!-- Modal content-->
+        <div class="modal-content" style="border-color: blue;
+    border-width: 2px;">
+          <div class="modal-header" style="">
+            <h4 class="modal-title">Followers</h4>
+<img data-dismiss="modal" style=" padding:10px; height:30px; width:30px;" class="" src="../../../../../static/img/cancel.png">
+          </div>
+          <div class="modal-body">
+            <div class="col">
+    {% for postss in following_user %}
+      <div class="column" style="padding:10px;">
+        <div class="" style="display: inline-flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-evenly;
+    align-items: flex-start;width:100%;">
+       <figure class="" style="width:30%;">
+        {% if postss.following.profile.picture %}
+        <a href="{% url 'profile' postss.following.profile.user %}"><img style="height:70px; width:70px; border-radius:50px;" class="" src="{{ postss.following.profile.picture.url }}"></a>
+        {% else %}
+         <a href="{% url 'profile' postss.following.profile.user %}"> <img style="height:70px; width:70px; border-radius:50px;" class="" src="https://bulma.io/images/placeholders/256x256.png"></a>
+        {% endif %}
+      </figure>
+       <a style="text-decoration:none; color:black; width:40%;" href="{% url 'profile' postss.following.profile.user %}"><p class="title">{{ postss.following.profile.first_name }} &nbsp{{ postss.following.profile.last_name }}</p>
+       <small>@{{ postss.following.profile.user }}</small>
+       </a>
+    </div>
+      {% if user.is_authenticated and user != postss.following.profile.user %}
+      <div class=""  style="padding:5px; width:100%;">
+
+  
+      <a style="width:100%; background-color:white; border-radius:20px;"  href="{% url 'newconversation' postss.following.profile.user %}" type="button" class="btn btn-outline-info">message</a>
+    </div>
+    {% endif %}
+        
+        </div>
+<hr>
+    {% endfor %}
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn"
+              data-dismiss="modal"
+              style=" background-color: blue; color:white;"
+            >
+              close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+ <div class="container" style="">
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="myModal1"
+      role="dialog"
+      style="margin-top: 70px;"
+    >
+      <div class="modal-dialog"style="    padding-bottom: 120px;">
+        <!-- Modal content-->
+        <div class="modal-content" style="border-color: blue;
+    border-width: 2px;">
+          <div class="modal-header" style="">
+            <h4 class="modal-title">Following</h4>
+<img data-dismiss="modal" style=" padding:10px; height:30px; width:30px;" class="" src="../../../../../static/img/cancel.png">
+          </div>
+          <div class="modal-body">
+            <div class="col">
+    {% for postss in followers_user %}
+      <div class="column" style="padding:10px;">
+        <div class="" style="display: inline-flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-evenly;
+    align-items: flex-start;width:100%;">
+       <figure class="" style="width:30%;">
+        {% if postss.follower.profile.picture %}
+        <a href="{% url 'profile' postss.follower.profile.user %}"><img style="height:70px; width:70px; border-radius:50px;" class="" src="{{ postss.follower.profile.picture.url }}"></a>
+        {% else %}
+         <a href="{% url 'profile' postss.follower.profile.user %}"> <img style="height:70px; width:70px; border-radius:50px;" class="" src="https://bulma.io/images/placeholders/256x256.png"></a>
+        {% endif %}
+      </figure>
+       <a style="text-decoration:none; color:black; width:40%;" href="{% url 'profile' postss.follower.profile.user %}"><p class="title">{{ postss.follower.profile.first_name }} &nbsp{{ postss.follower.profile.last_name }}</p>
+       <small>@{{ postss.follower.profile.user }}</small>
+       </a>
+    </div>
+      {% if user.is_authenticated and user != postss.follower.profile.user %}
+      <div class=""  style="padding:5px; width:100%;">
+      
+      <a style="width:100%; background-color:white; border-radius:20px;"  href="{% url 'newconversation' postss.follower.profile.user.username %}" type="button" class="btn btn-outline-info">message</a>
+    </div>
+    {% endif %}
+
+    
+        
+        </div>
+<hr>
+    {% endfor %}
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn"
+              data-dismiss="modal"
+              style="background-color: blue; color:white;"
+            >
+              close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+
+  <script type="text/javascript">
+    if (document.body.offsetWidth < 720) {
+      document.body.style.backgroundColor = "";
+      document.getElementById("navvvvvv").innerHTML = `
+
+
+<nav class="navbar navbar-expand-lg navbar-dark " style="position: fixed; 
+	background-color: beige;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+    height: 65px;
+    margin-top: -5px;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1098;">
+		<div class="container" style="display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: nowrap;
+    -ms-flex-align: center; 
+    align-items: center;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    flex-direction: row;
+    align-content: center;">
+		  <a class="navbar-brand" style="color:black;"   href="{% url 'index' %}">Image</a>
+
+        <a style="text-decoration:none; width:100%;" href="{% url 'search' %}">
+		  	<form class="form-inline " style="width:100%; margin:auto;" action="search/"  >
+		      <div class="input-group"  >
+          <input name="q" type="text" value="{{ request.GET.q }}" style="  border-radius:15px;width:100%; margin:auto;" class="form-control" placeholder="  search . . ." />
+				  
+				</div>
+		    </form>
+        </a>
+    </div>
+    </nav>
+
+	<nav class="shadow" style="position: fixed; width:100%;
+	background-color:white;
+    bottom: 5px;
+    left: 0;
+    right: 0;
+	border-radius:50px;
+    z-index: 1098;">
+		<div class="container-fluid" >
+
+		    <ul class="" id="navv"  style="display: inline-flex; margin:auto; list-style-type: none; width:100%;
+ 	display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    align-content: center;">
+		      <li class="">
+		        <a class="" href="{% url 'index' %}" style="  border-radius:50px; margin-left:-25px;  padding:10px; left:0; box-shadow: 2px, 2px, 2px, 2px; "><img src="../../../../../../../static/img/home.png"></a>
+		      </li>
+
+		      <li class="">
+		               <a href="{% url 'show-notifications' %}" class="nav-link" style="color:black;margin-left: -20px;">
+        <img style="padding-left:25px;" class="" src="../../../../static/img/notifications.png">
+        {% if count_notifications %}
+          <span class="badge" style="    margin-top: -21px;
+    margin-left: -30px;
+color:black;">{{ count_notifications }}</span>
+        {% endif %}</a>
+		      </li>
+		      <li class="">
+   
+      <a href="{% url 'inbox' %}" class="nav-link" style="color:black;">
+               {% if directs_count %}
+        <span class="badge" style="    
+    margin-right: -31px;
+color:black;">{{ directs_count }}</span>
+        {% endif %}
+       <img style="padding-left:5px;" class="" src="../../../../../static/img/inbox.png">
+          </a>
+		        </li>
+            <li>
+      {% if user.is_authenticated %}
+      <a href="{% url 'profile' request.user %}" class="nav-link " style="color:black;">
+        {% if request.user.profile.picture %}
+        
+        <img style="height:32px; width:32px; border-radius:50px; margin-left:5px;" class="" src="{{ request.user.profile.picture.url }}">
+        
+        {% else %}
+        <img style="height:32px; width:32px; border-radius:50px;  " class="" src="https://bulma.io/images/placeholders/256x256.png">
+        
+        {% endif %}</a>
+        {% else %}
+        <a href="{% url 'login' %}" class="nav-link " style="color:black;">
+        <img style="height:32px; width:32px; border-radius:50px;  " class="" src="https://bulma.io/images/placeholders/256x256.png">
+        
+        </a>
+        {% endif %} 
+      </li>
+
+		        
+
+		      
+		    </ul>
+		</div>
+    </nav>
+
+ 
+`;
+    }
+  </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="{% static 'js/init.js' %}"></script>
+  <script src="{% static 'js/slider.js' %}"></script>
+</body>
+</html>

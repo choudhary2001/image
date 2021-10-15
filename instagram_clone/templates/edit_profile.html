@@ -1,0 +1,127 @@
+{% extends 'base.html' %} {% load static %} {% load crispy_forms_tags %} {% block content %}
+
+<style>
+nav{
+  background-color: aquamarine !important;
+}
+nav .shadow{
+  background-color:white !important;
+}
+body{
+  background-color: aquamarine;
+}
+#id_first_name{
+      background-color: black;
+    color: white;
+    border-radius: 20px;
+
+}
+#id_last_name{
+    background-color: black;
+    color: white;
+    border-radius: 20px;
+
+}
+#id_url{
+    background-color: black;
+    color: white;
+    border-radius: 20px;
+
+}
+#id_location{
+    background-color: black;
+    color: white;
+    border-radius: 20px;
+
+}
+#id_profile_info{
+    background-color: black;
+    color: white;
+    border-radius: 20px;
+
+}
+#id_picture{
+  width:90%;
+}
+#id_background{
+  width:90%;
+}
+</style>
+
+<div class="container my-4">
+  <div class="" style="">
+    <div class="card" style="border-radius:20px;">
+      
+        <form
+          method="post"
+          enctype="multipart/form-data"
+          action=""
+          role="form"
+          style=""
+        >
+        <div class="card-header text-center bg-info text-white" style="border-top-right-radius:20px;border-top-left-radius:20px;">
+       Edit Profile
+        </div>
+        <div class="card-body">
+          {% csrf_token %}
+
+          <div class="field">
+            <div class="file is-boxed">
+              {{ form.picture | as_crispy_field }}
+            </div>
+          </div>
+          <div class="field">
+            <div class="file is-boxed">
+              {{ form.background | as_crispy_field }}
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">{{ form.first_name | as_crispy_field }}</div>
+          </div>
+
+          <div class="field">
+            <div class="control">{{ form.last_name | as_crispy_field }}</div>
+          </div>
+
+          <div class="field">
+            <div class="control">{{ form.location | as_crispy_field }}</div>
+          </div>
+
+          <div class="field">
+            <div class="control">{{ form.url | as_crispy_field }}</div>
+          </div>
+
+          <div class="field">
+            <div class="control">{{ form.profile_info | as_crispy_field }}</div>
+          </div>
+
+          <div class="row">
+            <div class="col s12">
+              <span style="color: red; font-weight: bold"
+                >{{ form.errors }}</span
+              >
+            </div>
+          </div>
+
+          <div class="field" style="margin-top: 10px">
+            <p class="control">
+              <button
+                type="submit"
+                style=" width: 100%; border-radius:20px; "
+                value="login"
+                class="btn btn-outline-success"
+              >
+                Update
+              </button>
+            </p>
+          </div>
+          </div>
+        </form>
+      
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock %}

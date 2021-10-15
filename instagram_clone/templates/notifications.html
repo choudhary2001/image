@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<style>
+@media screen and (max-width: 600px) {
+  #caard {
+   
+    width: 100% !important;
+  
+  }
+
+}
+@media screen and (max-width: 460px) {
+  #imgg {
+   
+    margin-left: -2px !important;
+  
+  }
+  #imggg {
+   
+    width:60px !important;
+    height:60px !important;
+    margin-right: 0px !important;
+
+  
+  }
+
+}
+</style>
+<div class="column">
+  
+
+
+{% for notification in notifications %}
+
+  <div class=""style="margin-top:20px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+" >
+{% if notification.notification_type == 2 %}
+      <div class="card" id="caard" style="width:60%;" >
+      <a style="color:black; position:absolute; right:0;" href="{% url 'delete-notification' notification.id %}" class="delete"><img style=" padding:10px; height:30px; width:30px;" class="" src="../../../../../static/img/cancel.png"></a>
+
+      <article class="" style="display: inline-flex; padding:10px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: space-evenly;
+    align-items: center;">
+  <figure class="" style="width:20%;">
+    <p class="" id="imgg" style="margin-left:20px;">
+        {% if notification.sender.profile.picture %}
+            <a href="{% url 'profile' notification.sender %}"><img style="width:50px; height:50px; border-radius:30px;" src="{{ notification.sender.profile.picture.url }}" alt="Placeholder image"></a>
+          {% else %}
+           <a href="{% url 'profile' notification.sender.username %}"> <img style="width:50px; height:50px; border-radius:30px;" src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image"></a>
+        {% endif %}
+    </p>
+  </figure>
+  <div class="" style="width:50%;">
+    <div class="">
+        <a style="color:black; text-decoration:none;" href="{% url 'profile' notification.sender.username %}"><strong>{{ notification.sender.profile.first_name }} {{ notification.sender.profile.last_name }}</strong><br> <small>@{{ notification.sender.username }}</small> </a>
+        <br>
+        Commented:
+      <p>{{ notification.text_preview }}</p>
+        <strong><small>{{ notification.date|naturaltime }}</small></strong>
+    </div>
+  </div>
+
+  <div class="" style="width:30%;">
+    <figure class="">
+     <a href="{{ notification.post.get_absolute_url }}"> <img id="imggg" style="width:100px; height:100px; border-radius:20px;" src="{{ notification.post.content.first.file.url }}" alt="Placeholder image"></a>
+  </figure>
+  </div>
+</article>
+
+      </div>
+{% endif %}
+
+
+{% if notification.notification_type == 3 %}
+      <div class="card" id="caard" style="width:60%;">
+      <a style="color:black;position:absolute; right:0;" href="{% url 'delete-notification' notification.id %}" class="delete"><img style=" padding:10px; height:30px; width:30px;" class=" " src="../static/img/cancel.png"></a>
+
+      <article class="" style="display: inline-flex;padding:10px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: space-evenly;
+    align-items: center;">
+  <figure class="" style="width:30%;">
+    <p class="" id="imgg" style="margin-left:20px;">
+        {% if notification.sender.profile.picture %}
+            <a href="{% url 'profile' notification.sender %}"><img style="width:50px; height:50px; border-radius:30px;" src="{{ notification.sender.profile.picture.url }}" alt="Placeholder image"></a>
+          {% else %}
+           <a href="{% url 'profile' notification.sender.username %}"> <img style="width:50px; height:50px; border-radius:30px;" src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image"></a>
+        {% endif %}
+    </p>
+  </figure>
+  <div class="" style="width:70%;">
+    <div class="">
+        <a style="color:black; text-decoration:none;" href="{% url 'profile' notification.sender.username %}"><strong>{{ notification.sender.profile.first_name }} {{ notification.sender.profile.last_name }}</strong><br> <small>@{{ notification.sender.username }}</small> </a>
+        <br>
+        <p><img style="height:30px;" class="" src="../../../../../static/img/add-user.png"> Followed you!</p>
+        <strong><small>{{ notification.date|naturaltime }}</small></strong>
+    </div>
+  </div>
+
+</article>
+
+      </div>
+{% endif %}
+
+
+<!-- FOR LIKE -->
+{% if notification.notification_type == 1 %}
+      <div class="card" id="caard" style="width:60%;">
+      <a style="color:black;position:absolute; right:0;" href="{% url 'delete-notification' notification.id %}" class="delete"><img style=" padding:10px; height:30px; width:30px;" class="" src="../static/img/cancel.png"></a>
+
+      <article class="" style="display: inline-flex; padding:10px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: space-evenly;
+    align-items: center;">
+  <figure class="" style="width:20%;">
+    <p class="" id="imgg" style="margin-left:20px;">
+        {% if notification.sender.profile.picture %}
+            <a href="{% url 'profile' notification.sender %}"><img style="width:50px; height:50px; border-radius:30px;" src="{{ notification.sender.profile.picture.url }}" alt="Placeholder image"></a>
+          {% else %}
+           <a href="{% url 'profile' notification.sender.username %}"> <img style="width:50px; height:50px; border-radius:30px;" src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image"></a>
+        {% endif %}
+    </p>
+  </figure>
+  <div class="" style="width:50%;">
+    <div class="">
+        <a style="color:black; text-decoration:none;" href="{% url 'profile' notification.sender.username %}"><strong>{{ notification.sender.profile.first_name }} {{ notification.sender.profile.last_name }}</strong><br> <small>@{{ notification.sender.username }}</small> </a>
+        <br>
+        <p><img style="height:30px;" class="" src="../../../../../static/img/thumbs-up.png"> Liked your post</p>
+        <strong><small>{{ notification.date|naturaltime }}</small></strong>
+    </div>
+  </div>
+
+  <div class="" style="width:30%;">
+    <figure class="">
+     <a href="{{ notification.post.get_absolute_url }}"> <img id="imggg" style="width:100px; height:100px; border-radius:20px;" src="{{ notification.post.content.first.file.url }}" alt="Placeholder image"></a>
+  </figure>
+  </div>
+</article>
+
+      </div>
+{% endif %}
+
+  </div>
+{% endfor %}
+<!-- FOR LIKES -->
+
+
+
+  
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+
+
+<body class="container-fluid" style="width:100%;">
+
+<style>
+
+
+
+/* Responsive layout - makes a two column-layout instead of four columns */
+@media screen and (max-width: 800px) {
+  #card {
+   
+    width: 49%;
+   
+  }
+    #img{
+   
+    width: 100%;
+   
+  }
+  #video{
+   
+    width: 100%;
+   
+  }
+  #figure{
+    margin-right: -4px!important;
+  }
+
+}
+
+@media screen and (max-width: 720px) {
+  #plus{
+    bottom:85px !important;
+    right: -10px !important;
+  }
+}
+
+#plus:hover{
+  background-color:aquamarine;
+  border-color:white;
+}
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  #card {
+   
+    width: 100%;
+    height:auto !important;
+  
+  }
+  #img{
+   
+    width: 100%;
+    height:auto !important;
+   
+  }
+  #video{
+   
+    width: 100%;
+    height:auto !important;
+   
+  }
+
+}
+</style>
+
+
+<!-- Header -->
+
+<!-- Photo Grid -->
+<div class="row" style=" padding-top:35px;padding-bottom:95px;margin: -20px;"> 
+  <div class="column" style=" display: inline-flex;  
+    justify-content: space-evenly;
+
+    align-items: stretch;
+
+    flex-wrap: wrap;
+    flex-direction: row;">
+  {% for post_item in post_items %}
+   {% if post_item.content.first.file.name|slice:"-4:" == 'jpeg' or post_item.content.first.file.name|slice:"-3:" == 'png' or post_item.content.first.file.name|slice:"-3:" == 'jpg' %}
+    <div class="card shadow" id="card" style=" margin-bottom:15px !important; border-radius:20px; min-width:235px;  background-color: aliceblue; border-color:blue; border-width:1px;  height:375px;">
+    <figure class="" style="" id="figure">
+      <a href="{{ post_item.get_absolute_url }}">
+        <img id="img" style="border-radius:20px; margin:-2px -2px -2px !important; min-width:235px; height:260px; " class="" src="{{ post_item.content.first.file.url }}" alt="Placeholder image">
+      </a>
+    </figure>
+        <figure class="" style="padding-left:20px;">
+          {% if post_item.user.profile.picture %}
+            <a style="color:black; text-decoration:none;" href="{% url 'profile' post_item.user %}"><img style="width:25px; height:25px; border-radius:20px; margin-top:-5px;" src="{{ post_item.user.profile.picture.url }}" alt="Placeholder image"> &nbsp {{ post_item.user.profile.first_name }} {{ post_item.user.profile.last_name }}</a>
+          {% else %}
+            <img  style="width:25px; height:25px;" src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+            <a href="{% url 'profile' post_item.user %}"><p class="title is-4">{{ post_item.user.profile.first_name }} {{ post_item.user.profile.last_name }}</p></a>
+
+          {% endif %}
+        </figure>
+    <div class="boxx" style="display: inline-flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;">
+    <div>
+      <a style="padding-left:20px;" href="{% url 'postlike' post_item.id %}"><img style="height:34px;" class="" src="../static/img/heart.png"></a>
+      <p style="margin-left:55px;  margin-top:-30px; color:black;" >{{ post_item.likes }}&nbspLikes</p>  
+       </div>
+       <div  style=" margin-top:-5px;">
+       <a style="" href="{% url 'postfavorite' post_item.id %}"><img style="height:28px;" class="" src="../static/img/save-file.png"></a>
+      </div>
+      <div style="  "> 
+       <a class=""style="" href="{{ post_item.content.first.file.url }}" download="{{ post_item.content.first.file.url }}"><img style="padding-right:10px;  height:28px;" class="" src="../static/img/download.png"></a>
+    </div>
+    </div>
+</div>
+
+  {% else %}
+  <div class="card" id="card" style=" margin-bottom:15px !important;  border-radius:20px;  background-color: aliceblue; border-color:blue; border-width:1px;  border-color:blue;  ">
+   <div style="    margin-left: -2px;
+    margin-right: -2px;">
+   <a href="{{ post_item.get_absolute_url }}">
+      <video id="video"  width=""  controls autoplay muted loop="true" preload="metadata" style="border-radius:20px;margin-top:-5px !important;  height:260px; ">
+        <source  style="border-radius:20px;" src="{{ post_item.content.first.file.url }}#t=0.5" type="video/mp4">        
+      </video>      
+    </a>
+    </div>
+        <figure class="" style="padding-left:20px; padding-top:1rem;">
+          {% if post_item.user.profile.picture %}
+            <a style="color:black; text-decoration:none;" href="{% url 'profile' post_item.user %}"><img style="width:25px; height:25px; border-radius:20px; margin-top:-5px;" src="{{ post_item.user.profile.picture.url }}" alt="Placeholder image"> &nbsp {{ post_item.user.profile.first_name }} {{ post_item.user.profile.last_name }}</a>
+          {% else %}
+            <img  style="width:25px; height:25px;" src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+            <a href="{% url 'profile' post_item.user %}"><p class="title is-4">{{ post_item.user.profile.first_name }} {{ post_item.user.profile.last_name }}</p></a>
+
+          {% endif %}
+        </figure>
+    <div class="boxx" style="display: inline-flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;">
+    <div>
+      <a style="padding-left:20px;" href="{% url 'postlike' post_item.id %}"><img style="height:34px;" class="" src="../static/img/heart.png"></a>
+      <p style="margin-left:55px;  margin-top:-30px; color:black;" >{{ post_item.likes }}&nbspLikes</p>  
+       </div>
+       <div  style=" margin-top:-5px;">
+       <a style="" href="{% url 'postfavorite' post_item.id %}"><img style="height:28px;" class="" src="../static/img/save-file.png"></a>
+      </div>
+      <div style="  "> 
+       <a class=""style="" href="{{ post_item.content.first.file.url }}" download="{{ post_item.content.first.file.url }}"><img style="padding-right:10px;  height:28px;" class="" src="../static/img/download.png"></a>
+    </div>
+    </div>
+    </div>
+    
+  {% endif %}
+
+  
+  {%endfor %}
+  
+
+</div>
+
+
+<div>
+<a style=" " href="{% url 'newpost' %}"><img id="plus"style="position: fixed;
+    right: 0;
+    bottom: 30px;
+    margin: 20px;
+    
+    margin-bottom: -30px;
+    border-radius: 60px;
+"  class="shadow" src="../static/img/add.png"></a>
+</div>
+
+</body>
+
+
+
+
+{% endblock %}

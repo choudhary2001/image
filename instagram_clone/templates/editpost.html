@@ -1,0 +1,161 @@
+{% extends 'base.html' %} {% load static %} {% load crispy_forms_tags %} {% block content %}
+
+<style>
+nav{
+  background-color: aquamarine !important;
+}
+nav .shadow{
+  background-color:white !important;
+}
+body{
+  background-color: aquamarine;
+}
+
+#id_tags{
+    border-color: white;
+    border-left-color: aquamarine;
+
+}
+#id_caption{
+    border-color: white;
+    border-left-color: aquamarine;
+    height: 100px;
+}
+#id_picture{
+  width:90%;
+}
+#id_content{
+  width:90%;
+}
+  @media screen and (max-width: 800px) {
+    #img {
+      max-width: 600px !important;
+    }
+  }
+    @media screen and (max-width: 600px) {
+    #img {
+      max-width: 400px !important;
+    }
+    @media screen and (max-width: 400px) {
+    #img {
+      max-width: 300px !important;
+    }
+    @media screen and (max-width: 300px) {
+    #img {
+      max-width: 220px !important;
+    }
+  }
+</style>
+
+<div class="container my-4">
+  <div class="" style="">
+    <div
+        class=""
+        style="
+        width:100%;
+        padding-bottom:20px;
+          display: inline-flex;
+          height: 100% !important;
+          flex-wrap: nowrap;
+          flex-direction: row;
+          align-content: center;
+          justify-content: center;
+          align-items: center;
+        "
+      >
+             {% for cont in postss.content.all %}
+        <!-- Full-width images with number and caption text -->
+        <div class="">
+          {% if cont.file.name|slice:"-4:" == 'jpeg' or cont.file.name|slice:"-3:" == 'png' or cont.file.name|slice:"-3:" == 'jpg' %}
+          <figure class="">
+            <img
+              id="img" class="shadow"
+              style="border-radius: 30px;  margin-bottom:-15px; max-width:800px;"
+              src="{{ cont.file.url }}"
+              alt="Placeholder image"
+            />
+          </figure>
+          {% else %}
+          <a href="{{ cont.get_absolute_url }}">
+            <video class="shadow"
+              id="img" style="border-radius: 30px"
+              controls
+              autoplay
+              muted
+              loop="true"
+              preload="metadata"
+            >
+              <source
+                id="img"
+                style="border-radius: 30px"
+                src="{{ cont.file.url }}#t=0.5"
+                type="video/mp4"
+              />
+            </video>
+          </a>
+          {% endif %}
+        </div>
+        {% endfor %}   
+        </div>
+    <div class="card" style="border-radius:20px;">
+      
+        <form
+          method="post"
+          enctype="multipart/form-data"
+          action=""
+          role="form"
+          style=""
+        >
+        <div class="card-header text-center bg-info text-white" style="border-top-right-radius:20px;border-top-left-radius:20px;">
+       Edit Post
+        </div>
+        <div class="card-body">
+          {% csrf_token %}
+
+          <div class="field">
+            <div class="file is-boxed">
+              {{ form.content | as_crispy_field }}
+            </div>
+          </div>
+          <div class="field">
+            <div class="file is-boxed">
+              {{ form.caption | as_crispy_field }}
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">{{ form.tags | as_crispy_field }}
+            <label class="label is-medium">Tags (add tags, separeted by commas with space)</label></div>
+          </div>
+
+
+
+          <div class="row">
+            <div class="col s12">
+              <span style="color: red; font-weight: bold"
+                >{{ form.errors }}</span
+              >
+            </div>
+          </div>
+
+          <div class="field" style="margin-top: 10px">
+            <p class="control">
+              <button
+                type="submit"
+                style=" width: 100%; border-radius:20px; border-color:aquamarine;"
+                value="login"
+                class="btn btn-outline-info"
+              >
+                Update
+              </button>
+            </p>
+          </div>
+          </div>
+        </form>
+      
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock %}
