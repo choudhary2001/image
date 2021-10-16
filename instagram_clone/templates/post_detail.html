@@ -335,7 +335,17 @@ body{
               <img style="  width:60px; height:60px; border-radius:50px;"
                 src="https://bulma.io/images/placeholders/96x96.png"
                 alt="Placeholder image"
-              /></a>
+              />                
+              <strong id="user" style="color: black; text-decoration: none"
+                  >{{ post.user.profile.first_name }} {{ post.user.profile.last_name }}</strong
+                ><br
+              /></</a>
+              <div
+                id="username"
+                style="margin-top: -40px !important; padding-left: 120px"
+              >
+                <strong>@{{ post.user.username }}</strong>
+              </div>
               {% endif %}
             </figure>
           </div>
@@ -465,11 +475,11 @@ body{
                   </button>
                   {% else %}
                   <a href="{% url 'login' %}" 
-                  
-                    style="margin-left: 60px; width: 83%"
+                    id="submit"
+                     style="margin-top:-45px;"
                     class="btn btn-primary form-control"
                   >
-                    Post comment
+                  <img style="height: 20px;" class="" src="../../../../../../static/img/send.png">
                   </a>
                   {% endif %}
                 </p>
@@ -732,7 +742,12 @@ body{
          <strong id="user" style="color:black; text-decoration:none; ">{{ post.user.profile.first_name }} {{ post.user.profile.last_name }}</strong><br></a>
          <div id="username" style=" margin-top:-25px; padding-left:70px;"><strong >@{{ post.user.username }}</strong></div>
           {% else %}
+           <a style="text-decoration:none;" href="{% url 'profile' post.user %}">
             <img style="  width:60px; height:60px; border-radius:50px;" src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+          </a>
+         <strong id="user" style="color:black; text-decoration:none; ">{{ post.user.profile.first_name }} {{ post.user.profile.last_name }}</strong><br></a>
+         <div id="username" style=" margin-top:-25px; padding-left:70px;"><strong >@{{ post.user.username }}</strong></div>
+         
           {% endif %}
         </figure>
       </div>
