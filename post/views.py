@@ -2,8 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, response
 from django.template import loader
 
-from post.models import Stream, Post, Tag, Likes, PostFileContent
-from post.forms import NewPostForm
+from post.models import Stream, Post, Tag, Likes, PostFileContent, contact
+from post.forms import NewPostForm, contactform
 
 from comment.models import Comment
 from comment.forms import CommentForm
@@ -268,8 +268,27 @@ def download(request, path):
 			response=HttpResponse(fh.read(), content_type="application/contents")
 			response['Content-Disposition']='inline;filename'+os.path.basename(file_path)
 			return response
-	raise Http404
+	raise HttpResponse
 
 def usersettings(request):
 
 	return render(request, 'settings.html')
+
+@login_required
+def contact(request):
+	user = request.user
+	if request.method == 'POST':
+		form = contactform(request.POST, instance=user.contactus)
+		if form.is_valid():
+			title = request.cleaneda_data.get('title')
+			message = form.cleaned_data.get('message')
+			form.save()
+			return redirect('profile', user)
+	else:
+		form = contactform()
+
+	context = {
+		'form':form,
+	}
+
+	return render(request, 'contactus.html', context)

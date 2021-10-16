@@ -121,3 +121,8 @@ post_delete.connect(Likes.user_unlike_post, sender=Likes)
 post_save.connect(Follow.user_follow, sender=Follow)
 post_delete.connect(Follow.user_unfollow, sender=Follow)
 
+class contact(models.Model):
+	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='contactus')
+	title = models.CharField(max_length=350)
+	message = models.TextField()
+	date = models.DateTimeField(auto_now_add=True)

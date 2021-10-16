@@ -1,5 +1,6 @@
 from django import forms
-from post.models import Post
+from django.db.models import fields
+from post.models import Post, contact
 
 from django.forms import ClearableFileInput
 
@@ -12,4 +13,10 @@ class NewPostForm(forms.ModelForm):
 		model = Post
 		fields = ('content', 'caption', 'tags')
 
+class contactform(forms.ModelForm):
+	title = forms.CharField(widget=forms.TextInput(attrs={'class': 'input is-medium'}), required=True)
+	message = forms.CharField(widget=forms.Textarea(attrs={'class': 'input is-medium'}), required=True)
 
+	class Meta:
+		model = contact
+		fields = ('title', 'message')
