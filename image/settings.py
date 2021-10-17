@@ -60,12 +60,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'instagram_clone.urls'
+ROOT_URLCONF = 'image.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'instagram_clone/templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'image/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -80,7 +80,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'instagram_clone.wsgi.application'
+WSGI_APPLICATION = 'image.wsgi.application'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -133,7 +133,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'instagram_clone/static')
+    os.path.join(BASE_DIR, 'image/static')
 ]
 
 MEDIA_URL = '/media/'

@@ -4,10 +4,10 @@ from celery import Celery
 
 # set the default Django settings module for the 'celery' program.
 # IMPORTANT check the name of your project and replace it here 'yourproject.settings'
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'instagram_clone.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'image.settings')
 
 # IMPORTANT check the name of your project and replace it here 'yourproject'
-app = Celery('instagram_clone')
+app = Celery('image')
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object to child processes.
